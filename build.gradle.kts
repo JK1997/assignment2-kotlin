@@ -39,7 +39,7 @@ dependencies {
     //db
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.h2database:h2")
-    runtimeOnly("org.postgresql:postgresql")
+    //runtimeOnly("org.postgresql:postgresql")
 
     compileOnly("org.projectlombok:lombok")
     compileOnly("org.apache.commons:commons-csv:1.10.0")
