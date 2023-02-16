@@ -19,7 +19,7 @@ data class ECommerce(
         val quantity: Int? = null,
         val invoiceDate: LocalDate? = null,
         val unitPrice: BigDecimal? = null,
-        val customerId: Int? = null,
+        val customerId: Int? = 0,
         val country: String? = null
         ){
 

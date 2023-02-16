@@ -42,7 +42,7 @@ dependencies {
     //runtimeOnly("org.postgresql:postgresql")
 
     compileOnly("org.projectlombok:lombok")
-    compileOnly("org.apache.commons:commons-csv:1.10.0")
+    implementation("org.apache.commons:commons-csv:1.10.0")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")

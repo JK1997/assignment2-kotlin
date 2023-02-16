@@ -6,7 +6,6 @@ import mu.KLogging
 import org.apache.commons.csv.CSVFormat
 import org.springframework.stereotype.Service
 import java.io.InputStream
-import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -15,7 +14,7 @@ class ECommerceService(val eCommerceRepository: ECommerceRepository) {
 
     companion object : KLogging()
 
-    var dateFormatter = DateTimeFormatter.ofPattern("MM/d/yyyy H:mm")
+    var dateFormatter = DateTimeFormatter.ofPattern("M/d/yyyy H:mm")
 
     fun getECommerceListFromCsv(inputStream: InputStream): List<ECommerce> =
             CSVFormat.Builder.create(CSVFormat.EXCEL).apply {
@@ -31,7 +30,7 @@ class ECommerceService(val eCommerceRepository: ECommerceRepository) {
                                 quantity = (it[3]).toInt(),
                                 invoiceDate = LocalDate.parse((it[4]), dateFormatter),
                                 unitPrice =  it[5].toBigDecimal(),
-                                customerId = (it[6]).toInt(),
+                                customerId = (it[6]).toIntOrNull(),
                                 country = (it[7])
                         )
                     }

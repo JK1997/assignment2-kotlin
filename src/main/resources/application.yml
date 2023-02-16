@@ -6,7 +6,8 @@ spring:
 #    url: jdbc:postgresql://localhost:5438/ecommerce
 #    username: postgres
 #    password: postgres
-    url: jdbc:h2:mem:testdb
+#    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:~/data/ecommerce;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
     username: sa
     password: password
