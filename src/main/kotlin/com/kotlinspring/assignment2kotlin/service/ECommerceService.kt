@@ -2,15 +2,17 @@ package com.kotlinspring.assignment2kotlin.service
 
 import com.kotlinspring.assignment2kotlin.model.ECommerce
 import com.kotlinspring.assignment2kotlin.repository.ECommerceRepository
+import com.kotlinspring.assignment2kotlin.util.CSVUtil
 import mu.KLogging
 import org.apache.commons.csv.CSVFormat
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.io.InputStream
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Service
-class ECommerceService(val eCommerceRepository: ECommerceRepository) {
+class ECommerceService(val eCommerceRepository: ECommerceRepository, val csvUtil: CSVUtil) {
 
     companion object : KLogging()
 
@@ -35,8 +37,12 @@ class ECommerceService(val eCommerceRepository: ECommerceRepository) {
                         )
                     }
 
-    fun saveECommerceList(inputStream: InputStream){
-        val eCommerceList = getECommerceListFromCsv(inputStream)
-        eCommerceRepository.saveAll(eCommerceList)
+    fun saveECommerceList(inputStream: InputStream, file: MultipartFile){
+        logger.info("saveECommerceList Start")
+        if (csvUtil.hasCSVFormat(file)){
+            val eCommerceList = getECommerceListFromCsv(inputStream)
+            eCommerceRepository.saveAll(eCommerceList)
+        }
+        logger.info("saveECommerceList End")
     }
 }
