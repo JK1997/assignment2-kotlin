@@ -11,7 +11,8 @@ import javax.persistence.*
 @Table(name = "ECOMMERCE")
 data class ECommerce(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "eCommerceGen")
+        @SequenceGenerator(name = "eCommerceGen", sequenceName = "eCommerceSeq", initialValue = 1, allocationSize = 100)
         val id: Int?,
         val invoiceNo: String? = null,
         val stockCode: String? = null,
