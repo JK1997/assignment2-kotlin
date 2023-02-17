@@ -23,41 +23,48 @@ class ECommerceService(val eCommerceRepository: ECommerceRepository, val csvUtil
     var dateFormatter = DateTimeFormatter.ofPattern("M/d/yyyy H:mm")
 
     fun getECommerceListFromCsv(inputStream: InputStream): List<ECommerce> =
-            CSVFormat.Builder.create(CSVFormat.EXCEL).apply {
-                setIgnoreSurroundingSpaces(true)
-            }.build().parse(inputStream.reader())
-                    .drop(1) // Dropping the header
-                    .map {
-                        ECommerce(
-                                id = 0,
-                                invoiceNo = it[0],
-                                stockCode = it[1],
-                                description = it[2],
-                                quantity = (it[3]).toInt(),
-                                invoiceDate = LocalDate.parse((it[4]), dateFormatter),
-                                unitPrice =  it[5].toBigDecimal(),
-                                customerId = (it[6]).toIntOrNull(),
-                                country = (it[7])
-                        )
-                    }
+        CSVFormat.Builder.create(CSVFormat.EXCEL).apply {
+            setIgnoreSurroundingSpaces(true)
+        }.build().parse(inputStream.reader())
+            .drop(1) // Dropping the header
+            .map {
+                ECommerce(
+                    id = 0,
+                    invoiceNo = it[0],
+                    stockCode = it[1],
+                    description = it[2],
+                    quantity = (it[3]).toInt(),
+                    invoiceDate = LocalDate.parse((it[4]), dateFormatter),
+                    unitPrice = it[5].toBigDecimal(),
+                    customerId = (it[6]).toIntOrNull(),
+                    country = (it[7])
+                )
+            }
 
-    fun saveECommerceList(inputStream: InputStream, file: MultipartFile){
+    fun saveECommerceList(inputStream: InputStream, file: MultipartFile) {
         logger.info("saveECommerceList Start")
-        if (csvUtil.hasCSVFormat(file)){
+        if (csvUtil.hasCSVFormat(file)) {
             val eCommerceList = getECommerceListFromCsv(inputStream)
             eCommerceRepository.saveAll(eCommerceList)
         }
         logger.info("saveECommerceList End")
     }
 
-    fun getAllECommerce(
-        sort: String,
-        page: Int,
-        size: Int
-    ): Page<ECommerce> {
+    fun getAllECommerce(sort: String, page: Int, size: Int): Page<ECommerce> {
+        logger.info("getAllECommerce Start")
         val direction = if (sort.startsWith("-")) Sort.Direction.DESC else Sort.Direction.ASC
         val sortField = sort.substring(1)
         val pageable: Pageable = PageRequest.of(page, size, Sort.by(direction, sortField))
+        logger.info("getAllECommerce End")
         return eCommerceRepository.findAll(pageable)
+    }
+
+    fun getAllECommerceByQuery(searchQuery: String, sort: String, page: Int, size: Int): Page<ECommerce> {
+        logger.info("getAllECommerceByQuery Start")
+        val direction = if (sort.startsWith("-")) Sort.Direction.DESC else Sort.Direction.ASC
+        val sortField = sort.substring(1)
+        val pageable: Pageable = PageRequest.of(page, size, Sort.by(direction, sortField))
+        logger.info("getAllECommerceByQuery End")
+        return eCommerceRepository.findECommerceBySearchQuery(searchQuery, pageable)
     }
 }

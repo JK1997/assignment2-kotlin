@@ -26,6 +26,7 @@ class ECommerceController(val eCommerceService: ECommerceService) {
 
     @GetMapping("/getAllECommerce")
     fun retrieveAllECommerceData(
+        @RequestParam(name = "searchQuery", required = false) searchQuery: String?,
         @RequestParam(name = "sort", defaultValue = "+id") sort: String,
         @RequestParam(name = "page", defaultValue = "0") page: Int,
         @RequestParam(name = "size", defaultValue = "10") size: Int
@@ -33,7 +34,11 @@ class ECommerceController(val eCommerceService: ECommerceService) {
         logger.info { "retrieveAllECommerceData Begin | Sort By: $sort, Page: $page, Size $size" }
         val responseMap = HashMap<String, Any>()
         val eCommerceList: List<ECommerce>
-        val eCommercePage: Page<ECommerce> = eCommerceService.getAllECommerce(sort, page, size)
+        val eCommercePage: Page<ECommerce> = if(searchQuery.isNullOrEmpty()) {
+            eCommerceService.getAllECommerce(sort, page, size)
+        } else {
+            eCommerceService.getAllECommerceByQuery(searchQuery, sort, page, size)
+        }
         eCommerceList = eCommercePage.content
         responseMap["eCommerceList"] = eCommerceList
         logger.info { "retrieveAllECommerceData End" }
