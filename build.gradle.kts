@@ -48,6 +48,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("io.mockk:mockk:1.10.4")
     testImplementation("com.ninja-squad:springmockk:3.0.1")
+    implementation("org.springframework.data:spring-data-jpa")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
 
 tasks.withType<KotlinCompile> {
