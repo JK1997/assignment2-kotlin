@@ -30,9 +30,9 @@ class ECommerceController(val eCommerceService: ECommerceService) {
         @RequestParam(name = "searchQuery", required = false) searchQuery: String?,
         @RequestParam(name = "sort", defaultValue = "+id") sort: String,
         @RequestParam(name = "page", defaultValue = "0") page: Int,
-        @RequestParam(name = "size", defaultValue = "10") size: Int
+        @RequestParam(name = "size", defaultValue = "10000") size: Int
     ): ResponseEntity<Any> {
-        logger.info { "retrieveAllECommerceData Begin | Sort By: $sort, Page: $page, Size $size" }
+        logger.info  ("retrieveAllECommerceData Begin | Sort By: $sort, Page: $page, Size $size" )
         val responseMap = HashMap<String, Any>()
         val eCommerceList: List<ECommerce>
         val eCommercePage: Page<ECommerce> = if(searchQuery.isNullOrEmpty()) {
@@ -41,8 +41,10 @@ class ECommerceController(val eCommerceService: ECommerceService) {
             eCommerceService.getAllECommerceByQuery(searchQuery, sort, page, size)
         }
         eCommerceList = eCommercePage.content
+        val totalNumberOfECommerce = eCommercePage.totalElements
         responseMap["eCommerceList"] = eCommerceList
-        logger.info { "retrieveAllECommerceData End" }
+        responseMap["totalNumberOfECommerce"] = totalNumberOfECommerce
+        logger.info ( "retrieveAllECommerceData End" )
         return ResponseEntity(responseMap, HttpStatus.OK)
     }
 
