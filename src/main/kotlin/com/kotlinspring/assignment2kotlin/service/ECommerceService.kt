@@ -5,6 +5,7 @@ import com.kotlinspring.assignment2kotlin.repository.ECommerceRepository
 import com.kotlinspring.assignment2kotlin.util.CSVUtil
 import mu.KLogging
 import org.apache.commons.csv.CSVFormat
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -16,7 +17,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Service
-class ECommerceService(val eCommerceRepository: ECommerceRepository, val csvUtil: CSVUtil) {
+class ECommerceService @Autowired constructor(val eCommerceRepository: ECommerceRepository, val csvUtil: CSVUtil) {
 
     companion object : KLogging()
 
