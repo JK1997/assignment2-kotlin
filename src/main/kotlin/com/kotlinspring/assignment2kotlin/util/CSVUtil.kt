@@ -19,10 +19,6 @@ import java.util.function.Consumer
 @Service
 class CSVUtil {
 
-    internal enum class ECommerceHeaders {
-        ID, LOGIN, NAME, SALARY
-    }
-
     fun hasCSVFormat(file: MultipartFile): Boolean {
         if (file.isEmpty) {
             throw CSVFileTypeException("File is empty")
